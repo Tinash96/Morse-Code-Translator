@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>R2-D2 Morse Code Translator</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: #000;
+            color: #0f0;
+            padding: 2rem;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            font-family: monospace;
+            font-size: 1rem;
+            background: #111;
+            color: #0f0;
+            border: none;
+            padding: 1rem;
+            resize: vertical;
+        }
+        select, button {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            margin-top: 1rem;
+            background: #222;
+            color: #0f0;
+            border: 1px solid #0f0;
+            cursor: pointer;
+        }
+        .output {
+            margin-top: 1rem;
+            background: #111;
+            padding: 1rem;
+            white-space: pre-wrap;
+            min-height: 100px;
+            border: 1px solid #0f0;
+        }
+    </style>
+</head>
+<body>
+<h1>R2-D2 Morse Code Translator</h1>
+<form th:action="@{/translate}" method="post">
+    <label for="mode">Mode:</label>
+    <select id="mode" name="mode" th:value="${mode}">
+        <option value="encode" th:selected="${mode == 'encode'}">Encode</option>
+        <option value="decode" th:selected="${mode == 'decode'}">Decode</option>
+    </select>
+    <br/><br/>
+    <label for="inputText" th:text="${mode == 'encode' ? 'Text to encode:' : 'Morse to decode:'}"></label><br/>
+    <textarea id="inputText" name="inputText" th:text="${inputText}"></textarea><br/>
+    <button type="submit">Translate</button>
+</form>
+
+<div class="output" th:text="${outputText}"></div>
+</body>
+</html>
