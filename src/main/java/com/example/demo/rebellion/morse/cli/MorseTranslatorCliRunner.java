@@ -2,7 +2,8 @@ package com.example.demo.rebellion.morse.cli;
 
 
 
-import com.rebellion.morse.service.MorseTranslatorService;
+
+import com.example.demo.rebellion.morse.service.MorseTranslatorService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

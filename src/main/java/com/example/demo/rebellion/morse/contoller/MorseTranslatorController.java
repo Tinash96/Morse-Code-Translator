@@ -3,7 +3,8 @@ package com.example.demo.rebellion.morse.contoller;
 
 
 
-import com.rebellion.morse.service.MorseTranslatorService;
+
+import com.example.demo.rebellion.morse.service.MorseTranslatorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

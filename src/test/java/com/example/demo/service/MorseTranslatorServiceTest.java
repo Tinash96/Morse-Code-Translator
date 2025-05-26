@@ -3,6 +3,7 @@ package com.example.demo.service;
 
 
 
+import com.example.demo.rebellion.morse.service.MorseTranslatorService;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
