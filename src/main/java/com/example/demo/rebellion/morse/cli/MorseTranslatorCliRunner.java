@@ -12,37 +12,42 @@ import java.util.Scanner;
 @Component
 public class MorseTranslatorCliRunner implements CommandLineRunner {
 
-    private final MorseTranslatorService service;
+    private final MorseTranslatorService translatorService;
 
-    public MorseTranslatorCliRunner(MorseTranslatorService service) {
-        this.service = service;
+    public MorseTranslatorCliRunner(MorseTranslatorService translatorService) {
+        this.translatorService = translatorService;
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("🤖 Welcome to R2-D2 Morse Translator CLI");
 
-        System.out.println("Welcome to R2-D2 Morse Translator CLI");
-        System.out.print("Enter mode (encode/decode): ");
-        String mode = scanner.nextLine().trim();
+        while (true) {
+            System.out.print("Enter mode (encode/decode/exit): ");
+            String mode = scanner.nextLine().trim().toLowerCase();
 
-        if (!mode.equalsIgnoreCase("encode") && !mode.equalsIgnoreCase("decode")) {
-            System.out.println("Invalid mode! Please enter 'encode' or 'decode'.");
-            return;
+            if (mode.equals("exit")) {
+                System.out.println("👋 Goodbye, human!");
+                break;
+            }
+
+            System.out.print("Enter text: ");
+            String input = scanner.nextLine();
+
+            String result;
+            if (mode.equals("encode")) {
+                result = translatorService.encode(input);
+            } else if (mode.equals("decode")) {
+                result = translatorService.decode(input);
+            } else {
+                System.out.println("❌ Invalid mode. Please enter 'encode' or 'decode'.");
+                continue;
+            }
+
+            System.out.println("📡 Result:\n" + result + "\n");
         }
 
-        System.out.print("Enter text: ");
-        String input = scanner.nextLine();
-
-        String result;
-        if ("encode".equalsIgnoreCase(mode)) {
-            result = service.lettersToMorseCode(input);
-        } else {
-            result = service.morseCodeToLetters(input);
-        }
-
-        System.out.println("Result:");
-        System.out.println(result);
+        scanner.close();
     }
 }
-
