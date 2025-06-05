@@ -1,59 +1,68 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>R2-D2 Morse Code Translator</title>
-    <style>
-        body {
-            font-family: 'Courier New', Courier, monospace;
-            background: #000;
-            color: #0f0;
-            padding: 2rem;
-        }
-        textarea {
-            width: 100%;
-            height: 100px;
-            font-family: monospace;
-            font-size: 1rem;
-            background: #111;
-            color: #0f0;
-            border: none;
-            padding: 1rem;
-            resize: vertical;
-        }
-        select, button {
-            font-size: 1rem;
-            padding: 0.5rem 1rem;
-            margin-top: 1rem;
-            background: #222;
-            color: #0f0;
-            border: 1px solid #0f0;
-            cursor: pointer;
-        }
-        .output {
-            margin-top: 1rem;
-            background: #111;
-            padding: 1rem;
-            white-space: pre-wrap;
-            min-height: 100px;
-            border: 1px solid #0f0;
-        }
-    </style>
+    <title>Morse Translator</title>
 </head>
 <body>
-<h1>R2-D2 Morse Code Translator</h1>
-<form th:action="@{/translate}" method="post">
-    <label for="mode">Mode:</label>
-    <select id="mode" name="mode" th:value="${mode}">
+<h2>Morse Code Translator</h2>
+
+<form action="/translate" method="post">
+    <textarea id="inputText" name="inputText" rows="4" cols="50" th:text="${inputText}"></textarea>
+    <select name="mode" id="mode">
         <option value="encode" th:selected="${mode == 'encode'}">Encode</option>
         <option value="decode" th:selected="${mode == 'decode'}">Decode</option>
     </select>
-    <br/><br/>
-    <label for="inputText" th:text="${mode == 'encode' ? 'Text to encode:' : 'Morse to decode:'}"></label><br/>
-    <textarea id="inputText" name="inputText" th:text="${inputText}"></textarea><br/>
     <button type="submit">Translate</button>
 </form>
 
-<div class="output" th:text="${outputText}"></div>
+<br>
+
+<label for="outputText">Morse Code Output:</label><br>
+<textarea id="outputText" readonly rows="4" cols="50" th:text="${outputText}">Default Morse</textarea>
+System.out.println(">>> Translate called with mode: " + mode + ", inputText: '" + inputText + "'");
+
+<button onclick="playMorse()">🔊 Play Morse</button>
+
+<script>
+    function playMorse() {
+        const morse = document.getElementById("outputText").value.trim();
+        console.log("Playing Morse:", morse);
+
+        if (!morse) {
+            alert("No Morse code to play!");
+            return;
+        }
+
+        const unit = 150;
+        const context = new (window.AudioContext || window.webkitAudioContext)();
+        let time = context.currentTime;
+
+        for (let char of morse) {
+            if (char === '.') {
+                playBeep(context, time, unit);
+                time += unit * 2;
+            } else if (char === '-') {
+                playBeep(context, time, unit * 3);
+                time += unit * 4;
+            } else if (char === ' ') {
+                time += unit * 2;
+            } else if (char === '/') {
+                time += unit * 6;
+            }
+        }
+
+        function playBeep(ctx, start, duration) {
+            const oscillator = ctx.createOscillator();
+            const gain = ctx.createGain();
+            oscillator.connect(gain);
+            gain.connect(ctx.destination);
+            oscillator.type = "sine";
+            oscillator.frequency.setValueAtTime(600, start);
+            oscillator.start(start);
+            oscillator.stop(start + duration / 1000);
+        }
+    }
+</script>
+
 </body>
 </html>
