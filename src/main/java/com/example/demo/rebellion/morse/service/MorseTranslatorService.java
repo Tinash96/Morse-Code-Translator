@@ -1,19 +1,30 @@
 package com.example.demo.rebellion.morse.service;
 
-
-
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Service class for encoding text to Morse code and decoding Morse code to text.
+ * <p>
+ * Supports letters (A-Z), digits (0-9), and common punctuation symbols.
+ * </p>
+ */
 @Service
 public class MorseTranslatorService {
 
+    /**
+     * A map from characters to their Morse code representations.
+     */
     private static final Map<Character, String> CHAR_TO_MORSE = new HashMap<>();
+
+    /**
+     * A map from Morse code symbols to their corresponding characters.
+     */
     private static final Map<String, Character> MORSE_TO_CHAR = new HashMap<>();
 
+    // Static block to initialize Morse code mappings
     static {
         String[][] morseTable = {
                 {"A", ".-"}, {"B", "-..."}, {"C", "-.-."}, {"D", "-.."}, {"E", "."},
@@ -35,6 +46,12 @@ public class MorseTranslatorService {
         }
     }
 
+    /**
+     * Encodes plain text to Morse code.
+     *
+     * @param text the plain text to encode
+     * @return the encoded Morse code string (words separated by "/" and letters by spaces)
+     */
     public String encode(String text) {
         if (text == null || text.isEmpty()) return "";
         StringBuilder morse = new StringBuilder();
@@ -46,6 +63,12 @@ public class MorseTranslatorService {
         return morse.toString().trim();
     }
 
+    /**
+     * Decodes a Morse code string to plain text.
+     *
+     * @param morseCode the Morse code string (words separated by "/" and letters by spaces)
+     * @return the decoded plain text
+     */
     public String decode(String morseCode) {
         if (morseCode == null || morseCode.isEmpty()) return "";
         StringBuilder decoded = new StringBuilder();
