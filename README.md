@@ -18,11 +18,7 @@ This project is a **Morse Code Translator** built with **Spring Boot**, offering
 
 ---
 
-## 📸 Screenshots
 
-> *(Add your app screenshots here!)*
-
----
 
 ## 🛠️ Technologies
 
